@@ -38,8 +38,9 @@ Follow these instructions to get a local copy up and running for development and
     ```sh
     # For Windows
     python -m venv venv
-    venv\Scripts\activate
-
+    .\venv\Scripts\activate
+     ```
+    ```sh
     # For macOS/Linux
     python3 -m venv venv
     source venv/bin/activate
