@@ -44,7 +44,7 @@ def chat():
             Your task is to carefully analyze the given prompt and determine if it is clear, complete, and well-optimized for initiating a successful software project.
             Identify any areas where the prompt could be improved—such as missing details, ambiguous requirements, or lack of scope definition—and provide actionable suggestions to refine and optimize the prompt for better project clarity, feasibility, and outcome.
             Keep your evaluation objective, clear, and focused on practical improvements.
-            Keep your response concise: limit it to 2–3 key suggestions with minimal explanation.
+            Keep your response concise: limit it to 4–5 key suggestions with minimum 2 line explanation each.
             give an example prompt with the changes in the end
             """
         
