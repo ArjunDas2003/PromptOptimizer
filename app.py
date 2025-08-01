@@ -45,6 +45,7 @@ def chat():
             Identify any areas where the prompt could be improved—such as missing details, ambiguous requirements, or lack of scope definition—and provide actionable suggestions to refine and optimize the prompt for better project clarity, feasibility, and outcome.
             Keep your evaluation objective, clear, and focused on practical improvements.
             Keep your response concise: limit it to 2–3 key suggestions with minimal explanation.
+            give an example prompt with the changes in the end
             """
         
         # Combine system prompt with conversation
