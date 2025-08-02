@@ -121,6 +121,33 @@ def generate_code():
     except Exception as e:
         return jsonify({'error': f'Error generating code: {str(e)}'}), 500
 
+@app.route('/optimize-prompt', methods=['POST'])
+def optimize_prompt():
+    try:
+        data = request.get_json()
+        prompt = data.get('prompt', '').strip()
+
+        if not prompt:
+            return jsonify({'error': 'Prompt is required'}), 400
+
+        system_prompt = """You are an AI assistant that refines and optimizes user prompts.
+        Your task is to take a user's prompt and rewrite it to be clearer, more concise, and better structured for a large language model.
+        Provide only the optimized prompt, without any additional explanations or text.
+        """
+
+        full_prompt = f"{system_prompt}\n\nUser Prompt: {prompt}"
+
+        response = model.generate_content(full_prompt)
+        optimized_prompt = response.text.strip()
+
+        return jsonify({
+            'success': True,
+            'optimized_prompt': optimized_prompt
+        })
+
+    except Exception as e:
+        return jsonify({'error': f'Error optimizing prompt: {str(e)}'}), 500
+
 @app.route('/clear-history', methods=['POST'])
 def clear_history():
     return jsonify({'success': True, 'message': 'History cleared'})

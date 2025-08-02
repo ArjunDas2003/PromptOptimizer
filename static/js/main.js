@@ -13,6 +13,10 @@ const send2 = document.getElementById('send2');
 const codeOutput = document.getElementById('code-output');
 const preview = document.getElementById('preview');
 
+const prompt3 = document.getElementById('prompt3');
+const send3 = document.getElementById('send3');
+const optimisedPrompt = document.querySelector('.optimised-prompt');
+
 // Initialize event listeners
 document.addEventListener('DOMContentLoaded', function() {
     // Option 1 event listeners
@@ -29,6 +33,14 @@ document.addEventListener('DOMContentLoaded', function() {
     prompt2.addEventListener('keypress', function(e) {
         if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
             handleCodeGeneration();
+        }
+    });
+
+    // Option 3 event listeners
+    send3.addEventListener('click', handlePromptOptimization);
+    prompt3.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+            handlePromptOptimization();
         }
     });
 
@@ -166,21 +178,67 @@ async function handleCodeGeneration() {
     }
 }
 
+async function handlePromptOptimization() {
+    const prompt = prompt3.value.trim();
+
+    if (!prompt) {
+        alert('Please enter a prompt to optimize');
+        return;
+    }
+
+    if (isLoading) return;
+
+    try {
+        setLoadingState(send3, true);
+        optimisedPrompt.textContent = 'Optimizing prompt...';
+
+        const response = await fetch('/optimize-prompt', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                prompt: prompt
+            })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            optimisedPrompt.textContent = data.optimized_prompt;
+            addCopyButton(optimisedPrompt, data.optimized_prompt);
+        } else {
+            throw new Error(data.error || 'Unknown error occurred');
+        }
+
+    } catch (error) {
+        console.error('Error:', error);
+        optimisedPrompt.textContent = 'Error: ' + error.message;
+        alert('Error: ' + error.message);
+    } finally {
+        setLoadingState(send3, false);
+    }
+}
+
 function displayGeneratedCode(code) {
     codeOutput.textContent = code;
-    
+    addCopyButton(codeOutput, code);
+}
+
+function addCopyButton(element, textToCopy) {
     // Add copy button functionality
     const copyButton = document.createElement('button');
-    copyButton.textContent = 'Copy Code';
+    copyButton.textContent = 'Copy';
     copyButton.className = 'copy-btn';
-    copyButton.onclick = () => copyToClipboard(code);
+    copyButton.onclick = () => copyToClipboard(textToCopy);
     
     // Clear any existing copy button
-    const existingBtn = codeOutput.parentNode.querySelector('.copy-btn');
+    const existingBtn = element.parentNode.querySelector('.copy-btn');
     if (existingBtn) existingBtn.remove();
     
-    codeOutput.parentNode.insertBefore(copyButton, codeOutput.nextSibling);
+    element.parentNode.insertBefore(copyButton, element.nextSibling);
 }
+
 
 function updatePreview(code) {
     // Create blob URL for the HTML content
@@ -196,7 +254,7 @@ function updatePreview(code) {
     };
 }
 
-// Utility functions
+
 function setLoadingState(button, loading) {
     isLoading = loading;
     if (loading) {
@@ -239,7 +297,7 @@ function copyToClipboard(text) {
         }, 2000);
     }).catch(err => {
         console.error('Failed to copy: ', err);
-        alert('Failed to copy code to clipboard');
+        alert('Failed to copy to clipboard');
     });
 }
 

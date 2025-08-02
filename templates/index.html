@@ -159,26 +159,26 @@ button {
   overflow: hidden;
 }
 
-#send1, #send2 {
+#send1, #send2, #send3 {
   background: linear-gradient(135deg, var(--honolulu-blue), var(--blue-green));
   color: white;
   margin-right: 0.75rem;
   box-shadow: var(--shadow-sm);
 }
 
-#send1:hover, #send2:hover {
+#send1:hover, #send2:hover,#send2:hover {
   background: linear-gradient(135deg, var(--marian-blue), var(--honolulu-blue));
   box-shadow: var(--shadow-md);
   transform: translateY(-1px);
 }
 
-#clear1 {
+#clear1, #clear3 {
   background: var(--secondary-color);
   color: var(--text-primary);
   border: 1px solid var(--border-color);
 }
 
-#clear1:hover {
+#clear1:hover,  #clear3:hover {
   background: var(--non-photo-blue-2);
   color: var(--text-primary);
   box-shadow: var(--shadow-sm);
@@ -195,7 +195,7 @@ button {
 }
 
 /* History box */
-#history-box {
+#history-box ,.optimised-prompt{
   min-height: 100px;
   padding: 1rem;
   background: var(--secondary-color);
@@ -429,6 +429,14 @@ body::before {
             <button id="clear1">Clear</button>
         </div>
         <div id="history-box"></div>
+
+        <h3>Prompt optimiser</h3>
+        <textarea id="prompt3" placeholder="Write your prompt to optimise here..."></textarea>
+        <div class="btn-row">
+            <button id="send3">Send</button>
+            <button id="clear3">Clear</button>
+        </div>
+        <div class="optimised-prompt" ></div>
     </section>
 
     <section id="option2-section" class="section">
@@ -440,6 +448,7 @@ body::before {
         <h3>Live Preview</h3>
         <iframe id="preview" sandbox="allow-scripts" width="100%" style="aspect-ratio: 16/9;"></iframe>
     </section>
+
     
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
